@@ -1,6 +1,7 @@
 library(shiny)
 library(promises)
 library(future)
+library(shinyjs)
 
 plan(multisession)
 
@@ -23,6 +24,7 @@ moduleUI <- function(id, delay, sync) {
 module <- function(input, output, session, delay, sync) {
   observeEvent(input$btn, {
     output$txt <- renderPrint( {
+      shinyjs::addClass(id = "txt", class = "green")
       if (sync) {
         long_running(delay, runif(1))
       } else {
@@ -34,6 +36,17 @@ module <- function(input, output, session, delay, sync) {
 }
 
 ui <- fluidPage(
+  useShinyjs(),
+  inlineCSS(list(.green = "background-color: greenyellow")),
+  tags$head(tags$script("
+    $(document).on({
+      'shiny:recalculated': function(event) {
+        setTimeout(function(){
+          $('.shiny-text-output').removeClass('green');
+        }, 2000);
+      }
+    })
+  ")),
   moduleUI("m1", 0, "synch"),
   moduleUI("m2", 10, "synch"),
   moduleUI("m3", 2, "asynch"),
