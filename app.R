@@ -32,3 +32,19 @@ module <- function(input, output, session, delay, sync) {
     })
   })
 }
+
+ui <- fluidPage(
+  moduleUI("m1", 0, "synch"),
+  moduleUI("m2", 10, "synch"),
+  moduleUI("m3", 2, "asynch"),
+  moduleUI("m4", 10, "asynch")
+)
+
+server <- function(input, output, session) {
+  callModule(module, id = "m1", session = session, delay = 0, sync = T)
+  callModule(module, id = "m2", session = session, delay = 10, sync = T)
+  callModule(module, id = "m3", session = session, delay = 2, sync = F)
+  callModule(module, id = "m4", session = session, delay = 10, sync = F)
+}
+
+shinyApp(ui, server)
