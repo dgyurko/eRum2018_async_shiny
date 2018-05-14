@@ -37,7 +37,18 @@ module <- function(input, output, session, delay, sync) {
 
 ui <- fluidPage(
   useShinyjs(),
-  inlineCSS(list(.green = "background-color: greenyellow")),
+  inlineCSS(list(
+    .green = "background-color: greenyellow",
+    .btn = "
+      height: 100px;
+      width: 200px;
+      font-size: 2.5em;
+    ",
+    ".shiny-text-output" = "
+      height: 150px;
+      font-size: 2em;
+    "
+  )),
   tags$head(tags$script("
     $(document).on({
       'shiny:recalculated': function(event) {
