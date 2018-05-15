@@ -1,0 +1,89 @@
+eRum 2018: Going Async with Shiny
+========================================================
+author: David Gyurko
+date: 2018.05.14
+autosize: true
+
+About me
+========================================================
+- Consultant at United Consult
+  + Working on Big Data problems
+- FreelanceR
+  + Shiny development
+  + Teaching
+- Content management: eRum 2018 homepage
+
+Why async?
+========================================================
+
+R is single threaded
+
+Tasks block each other
+- No problem with small tasks
+
+***
+Long running functions can be problematic
+- Reading big csv file
+- API call
+- Training a model
+
+Evaluation
+========================================================
+
+- Synchronous evaluation
+
+<img src="images/sync_rendering.png" alt="drawing" style="width: 1200px;"/>
+
+- Async evaluation
+
+<img src="images/async_rendering.png" alt="drawing" style="width: 1200px;"/>
+
+source: [Joe Cheng - Scaling Shiny apps with async programming](https://www.rstudio.com/resources/videos/scaling-shiny-apps-with-async-programming/)
+
+How?
+========================================================
+
+Combination of `future` and `promises` packages (+ async `shiny`).
+
+Synchronous solution:
+
+```{r, eval = F}
+read.csv("eRum.csv") %>%
+  filter(talk_type = "shiny") %>%
+  select(speaker_name)
+```
+
+Asynchronous solution:
+
+```{r, eval = F}
+future(read.csv("eRum.csv")) %...>% 
+  filter(talk_type = "shiny") %...>%
+  select(speaker_name)
+```
+
+1. Wrap the function in `future` call
+2. Use promise pipe operator (`%...>%`) 
+
+Demo
+========================================================
+
+Time for a demo!
+
+Current status
+========================================================
+
+- Currently not stable on Windows
+- Available on Github (`"rstudio/shiny"`)
+  + Used to live in the @async branch
+  + RStudio team is looking for a feedback before releasing to `CRAN`
+
+<img src="images/joe_cheng_comment.png" alt="drawing" style="width: 1500px;"/>
+
+Learn more
+========================================================
+
+- https://www.rstudio.com/resources/videos/scaling-shiny-apps-with-async-programming/
+- https://medium.com/@joe.cheng/async-programming-in-r-and-shiny-ebe8c5010790
+- https://medium.com/@joe.cheng/an-informal-intro-to-async-shiny-cbf01c85c4c5
+- https://cran.r-project.org/web/packages/promises/vignettes/shiny.html
+- https://github.com/getify/You-Dont-Know-JS/blob/master/async%20&%20performance/README.md#you-dont-know-js-async--performance
