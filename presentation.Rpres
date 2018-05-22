@@ -49,7 +49,7 @@ Synchronous solution:
 
 ```{r, eval = F}
 read.csv("eRum.csv") %>%
-  filter(talk_type = "shiny") %>%
+  filter(talk_type == "shiny") %>%
   select(speaker_name)
 ```
 
@@ -57,7 +57,7 @@ Asynchronous solution:
 
 ```{r, eval = F}
 future(read.csv("eRum.csv")) %...>% 
-  filter(talk_type = "shiny") %...>%
+  filter(talk_type == "shiny") %...>%
   select(speaker_name)
 ```
 
